@@ -47,8 +47,8 @@ jobs:
       - name: Compile
         run: yarn compile
 
-      # - name: Compile Uniswap V3 types
-      #   run: yarn compile-uniswap-contract-types
+      # - name: Compile Pegasys V3 types
+      #   run: yarn compile-pegasys-contract-types
 
       - name: Run test node
         run: |

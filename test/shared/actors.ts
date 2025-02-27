@@ -22,7 +22,7 @@ export class ActorFixture {
     this.wallets = wallets
     this.provider = provider
   }
-  /* EOA that owns all Uniswap-related contracts */
+  /* EOA that owns all Pegasys-related contracts */
 
   /* EOA that mints and transfers WETH to test accounts */
   wethOwner() {
@@ -34,7 +34,7 @@ export class ActorFixture {
     return this._getActor(WALLET_USER_INDEXES.TOKENS_OWNER)
   }
 
-  uniswapRootUser() {
+  pegasysRootUser() {
     return this._getActor(WALLET_USER_INDEXES.UNISWAP_ROOT)
   }
 
@@ -60,7 +60,7 @@ export class ActorFixture {
     return [this.lpUser0(), this.lpUser1(), this.lpUser2()]
   }
 
-  /* These EOAs trade in the uniswap pools and incur fees */
+  /* These EOAs trade in the pegasys pools and incur fees */
   traderUser0() {
     return this._getActor(WALLET_USER_INDEXES.TRADER_USER_0)
   }

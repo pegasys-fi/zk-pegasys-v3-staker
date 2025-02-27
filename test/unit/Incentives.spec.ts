@@ -1,4 +1,4 @@
-import { uniswapFixture, UniswapFixtureType } from '../shared/fixtures'
+import { pegasysFixture, PegasysFixtureType } from '../shared/fixtures'
 import {
   expect,
   getMaxTick,
@@ -28,11 +28,11 @@ describe('unit/Incentives', async () => {
   const Time = createTimeMachine()
 
   let helpers: HelperCommands
-  let context: UniswapFixtureType
+  let context: PegasysFixtureType
   let timestamps: ContractParams.Timestamps
 
   beforeEach('create fixture loader', async () => {
-    context = await uniswapFixture(getWallets(), provider)
+    context = await pegasysFixture(getWallets(), provider)
     helpers = HelperCommands.fromTestContext(context, actors, provider)
   })
 
@@ -167,9 +167,9 @@ describe('unit/Incentives', async () => {
               context.staker.interface.encodeFunctionData('stakeToken', [incentiveKey, tokenId]),
             ])
         ).wait()
-        ;({ totalRewardUnclaimed, totalSecondsClaimedX128, numberOfStakes } = await context.staker
-          .connect(actors.lpUser0())
-          .incentives(incentiveId))
+          ; ({ totalRewardUnclaimed, totalSecondsClaimedX128, numberOfStakes } = await context.staker
+            .connect(actors.lpUser0())
+            .incentives(incentiveId))
         expect(totalRewardUnclaimed).to.equal(150)
         expect(totalSecondsClaimedX128).to.equal(0)
         expect(numberOfStakes).to.equal(1)
@@ -210,7 +210,7 @@ describe('unit/Incentives', async () => {
           expect(now).to.be.lessThan(params.endTime, 'test setup: after end time')
 
           await expect(subject(params)).to.be.revertedWith(
-            'UniswapV3Staker::createIncentive: start time must be now or in the future'
+            'PegasysV3Staker::createIncentive: start time must be now or in the future'
           )
         })
 
@@ -218,14 +218,14 @@ describe('unit/Incentives', async () => {
           const params = makeTimestamps(await blockTimestamp())
           params.endTime = params.startTime - 10
           await expect(subject(params)).to.be.revertedWith(
-            'UniswapV3Staker::createIncentive: start time must be before end time'
+            'PegasysV3Staker::createIncentive: start time must be before end time'
           )
         })
 
         it('start time is too far into the future', async () => {
           const params = makeTimestamps((await blockTimestamp()) + 2 ** 32 + 1)
           await expect(subject(params)).to.be.revertedWith(
-            'UniswapV3Staker::createIncentive: start time too far into future'
+            'PegasysV3Staker::createIncentive: start time too far into future'
           )
         })
 
@@ -233,7 +233,7 @@ describe('unit/Incentives', async () => {
           const params = makeTimestamps(await blockTimestamp())
           params.endTime = params.startTime + 2 ** 32 + 1
           await expect(subject(params)).to.be.revertedWith(
-            'UniswapV3Staker::createIncentive: incentive duration is too long'
+            'PegasysV3Staker::createIncentive: incentive duration is too long'
           )
         })
       })
@@ -252,7 +252,7 @@ describe('unit/Incentives', async () => {
               },
               BNe18(0)
             )
-          ).to.be.revertedWith('UniswapV3Staker::createIncentive: reward must be positive')
+          ).to.be.revertedWith('PegasysV3Staker::createIncentive: reward must be positive')
         })
       })
     })
@@ -318,7 +318,7 @@ describe('unit/Incentives', async () => {
       it('block.timestamp <= end time', async () => {
         await Time.set(timestamps.endTime - 10)
         await expect(subject({})).to.be.revertedWith(
-          'UniswapV3Staker::endIncentive: cannot end incentive before end time'
+          'PegasysV3Staker::endIncentive: cannot end incentive before end time'
         )
       })
 
@@ -329,7 +329,7 @@ describe('unit/Incentives', async () => {
           subject({
             startTime: (await blockTimestamp()) + 1000,
           })
-        ).to.be.revertedWith('UniswapV3Staker::endIncentive: no refund available')
+        ).to.be.revertedWith('PegasysV3Staker::endIncentive: no refund available')
       })
 
       it('incentive has stakes', async () => {
@@ -347,7 +347,7 @@ describe('unit/Incentives', async () => {
         // Adjust the block.timestamp so it is after the claim deadline
         await Time.set(timestamps.endTime + 1)
         await expect(subject({})).to.be.revertedWith(
-          'UniswapV3Staker::endIncentive: cannot end incentive while deposits are staked'
+          'PegasysV3Staker::endIncentive: cannot end incentive while deposits are staked'
         )
       })
     })

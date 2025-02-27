@@ -1,15 +1,15 @@
 import { constants } from 'ethers'
 
-import UniswapV3Pool from '@uniswap/v3-core/artifacts-zk/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
+import PegasysV3Pool from '@pegasys/v3-core/artifacts-zk/contracts/PegasysV3Pool.sol/PegasysV3Pool.json'
 import WETH9 from './external/WETH9.json'
 import { ISwapRouter } from '../../types/ISwapRouter'
 import { IWETH9 } from '../../types/IWETH9'
 import {
-  MockTimeUniswapV3Staker,
+  MockTimePegasysV3Staker,
   TestERC20,
   INonfungiblePositionManager,
-  IUniswapV3Factory,
-  IUniswapV3Pool,
+  IPegasysV3Factory,
+  IPegasysV3Pool,
   TestIncentiveId,
 } from '../../typechain'
 import { NFTDescriptor } from '../../types/NFTDescriptor'
@@ -26,15 +26,15 @@ export const wethFixture = async ([wallet]): Promise<WETH9Fixture> => {
   return { weth9 }
 }
 
-const v3CoreFactoryFixture = async ([wallet]): Promise<IUniswapV3Factory> => {
-  return (await deployContract(wallet, 'MockTimeUniswapV3Factory', [
+const v3CoreFactoryFixture = async ([wallet]): Promise<IPegasysV3Factory> => {
+  return (await deployContract(wallet, 'MockTimePegasysV3Factory', [
     (await getTimeSimulator()).address,
-  ])) as IUniswapV3Factory
+  ])) as IPegasysV3Factory
 }
 
 export const v3RouterFixture = async ([wallet]): Promise<{
   weth9: IWETH9
-  factory: IUniswapV3Factory
+  factory: IPegasysV3Factory
   router: ISwapRouter
 }> => {
   const { weth9 } = await wethFixture([wallet])
@@ -52,9 +52,9 @@ const nftDescriptorLibraryFixture = async ([wallet]): Promise<NFTDescriptor> => 
   return (await deployContract(wallet, 'NFTDescriptor')) as NFTDescriptor
 }
 
-type UniswapFactoryFixture = {
+type PegasysFactoryFixture = {
   weth9: IWETH9
-  factory: IUniswapV3Factory
+  factory: IPegasysV3Factory
   router: ISwapRouter
   nft: INonfungiblePositionManager
   tokens: [TestERC20, TestERC20, TestERC20]
@@ -62,7 +62,7 @@ type UniswapFactoryFixture = {
 
 let nftDescriptorLibrary: NFTDescriptor | undefined
 
-export const uniswapFactoryFixture = async (wallets): Promise<UniswapFactoryFixture> => {
+export const pegasysFactoryFixture = async (wallets): Promise<PegasysFactoryFixture> => {
   const { weth9, factory, router } = await v3RouterFixture(wallets)
   const tokens = [
     await deployContract(wallets[0], 'TestERC20', [constants.MaxUint256.div(2)]), // do not use maxu256 to avoid overflowing
@@ -157,31 +157,31 @@ export const mintPosition = async (
   }
 }
 
-export type UniswapFixtureType = {
-  factory: IUniswapV3Factory
+export type PegasysFixtureType = {
+  factory: IPegasysV3Factory
   fee: FeeAmount
   nft: INonfungiblePositionManager
   pool01: string
   pool12: string
-  poolObj: IUniswapV3Pool
+  poolObj: IPegasysV3Pool
   router: ISwapRouter
-  staker: MockTimeUniswapV3Staker
+  staker: MockTimePegasysV3Staker
   testIncentiveId: TestIncentiveId
   tokens: [TestERC20, TestERC20, TestERC20]
   token0: TestERC20
   token1: TestERC20
   rewardToken: TestERC20
 }
-export const uniswapFixture = async (wallets, provider): Promise<UniswapFixtureType> => {
-  const { tokens, nft, factory, router } = await uniswapFactoryFixture(wallets)
+export const pegasysFixture = async (wallets, provider): Promise<PegasysFixtureType> => {
+  const { tokens, nft, factory, router } = await pegasysFactoryFixture(wallets)
   const signer = new ActorFixture(wallets, provider).stakerDeployer()
-  const staker = (await deployContract(signer, 'MockTimeUniswapV3Staker', [
+  const staker = (await deployContract(signer, 'MockTimePegasysV3Staker', [
     factory.address,
     nft.address,
     2 ** 32,
     2 ** 32,
     (await getTimeSimulator()).address,
-  ])) as MockTimeUniswapV3Staker
+  ])) as MockTimePegasysV3Staker
 
   const testIncentiveId = (await deployContract(signer, 'TestIncentiveId')) as TestIncentiveId
 
@@ -202,7 +202,7 @@ export const uniswapFixture = async (wallets, provider): Promise<UniswapFixtureT
 
   const pool12 = await factory.getPool(tokens[1].address, tokens[2].address, fee)
 
-  const poolObj = new Contract(pool01, UniswapV3Pool.abi, wallets[0]) as IUniswapV3Pool
+  const poolObj = new Contract(pool01, PegasysV3Pool.abi, wallets[0]) as IPegasysV3Pool
 
   return {
     nft,

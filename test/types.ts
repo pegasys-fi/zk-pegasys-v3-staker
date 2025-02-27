@@ -1,7 +1,7 @@
 /// <reference path="./matchers/beWithin.ts"/>
 
-import { UniswapFixtureType } from './shared/fixtures'
+import { PegasysFixtureType } from './shared/fixtures'
 
-export type TestContext = UniswapFixtureType & {
+export type TestContext = PegasysFixtureType & {
   subject?: Function
 }

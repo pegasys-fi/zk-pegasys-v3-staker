@@ -17,7 +17,7 @@ import { expect, use } from 'chai'
 import { solidity } from 'ethereum-waffle'
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
 
-import { IUniswapV3Pool, TestERC20 } from '../../typechain'
+import { IPegasysV3Pool, TestERC20 } from '../../typechain'
 import { isArray, isString } from 'lodash'
 import { ethers } from 'hardhat'
 import { getTimeSimulator, loadArtifact, getWallets } from './zkSyncUtils'
@@ -111,7 +111,7 @@ export const maxGas = {
 }
 export const days = (n: number) => 86_400 * n
 
-export const getSlot0 = async (pool: IUniswapV3Pool) => {
+export const getSlot0 = async (pool: IPegasysV3Pool) => {
   if (!pool.signer) {
     throw new Error('Cannot getSlot0 without a signer')
   }
@@ -119,7 +119,7 @@ export const getSlot0 = async (pool: IUniswapV3Pool) => {
 }
 
 // This is currently lpUser0 but can be called from anybody.
-export const getCurrentTick = async (pool: IUniswapV3Pool): Promise<number> => (await getSlot0(pool)).tick
+export const getCurrentTick = async (pool: IPegasysV3Pool): Promise<number> => (await getSlot0(pool)).tick
 
 export const arrayWrap = (x: any) => {
   if (!isArray(x)) {

@@ -16,8 +16,8 @@ import _ from 'lodash'
 import {
   TestERC20,
   INonfungiblePositionManager,
-  MockTimeUniswapV3Staker,
-  IUniswapV3Pool,
+  MockTimePegasysV3Staker,
+  IPegasysV3Pool,
   TestIncentiveId,
 } from '../../typechain'
 import { HelperTypes } from './types'
@@ -38,10 +38,10 @@ import { Contract, Provider } from 'zksync-web3'
 export class HelperCommands {
   actors: ActorFixture
   provider: Provider
-  staker: MockTimeUniswapV3Staker
+  staker: MockTimePegasysV3Staker
   nft: INonfungiblePositionManager
   router: ISwapRouter
-  pool: IUniswapV3Pool
+  pool: IPegasysV3Pool
   testIncentiveId: TestIncentiveId
 
   DEFAULT_INCENTIVE_DURATION = 2_000
@@ -59,10 +59,10 @@ export class HelperCommands {
     testIncentiveId,
   }: {
     provider: Provider
-    staker: MockTimeUniswapV3Staker
+    staker: MockTimePegasysV3Staker
     nft: INonfungiblePositionManager
     router: ISwapRouter
-    pool: IUniswapV3Pool
+    pool: IPegasysV3Pool
     actors: ActorFixture
     testIncentiveId: TestIncentiveId
   }) {
@@ -186,7 +186,7 @@ export class HelperCommands {
     await (
       await this.nft
         .connect(params.lp)
-        ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, tokenId)
+      ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, tokenId)
     ).wait()
     await (
       await this.staker
@@ -209,7 +209,7 @@ export class HelperCommands {
     await (
       await this.nft
         .connect(params.lp)
-        ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, params.tokenId)
+      ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, params.tokenId)
     ).wait()
   }
 

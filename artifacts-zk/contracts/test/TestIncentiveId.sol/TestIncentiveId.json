@@ -13,7 +13,7 @@
               "type": "address"
             },
             {
-              "internalType": "contract IUniswapV3Pool",
+              "internalType": "contract IPegasysV3Pool",
               "name": "pool",
               "type": "address"
             },
@@ -33,7 +33,7 @@
               "type": "address"
             }
           ],
-          "internalType": "struct IUniswapV3Staker.IncentiveKey",
+          "internalType": "struct IPegasysV3Staker.IncentiveKey",
           "name": "key",
           "type": "tuple"
         }

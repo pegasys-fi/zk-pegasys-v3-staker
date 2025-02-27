@@ -1,16 +1,16 @@
 {
-  "name": "era-uniswap-v3-staker",
-  "description": "Canonical liquidity mining contract for Uniswap V3 forked for zkSync Era",
+  "name": "zk-pegasys-v3-staker",
+  "description": "Canonical liquidity mining contract for Pegasys V3 forked for zkSync Era",
   "license": "GPL-3.0-or-later",
   "version": "1.0.2",
   "keywords": [
-    "uniswap",
+    "pegasys",
     "liquidity mining",
     "v3"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/uniswap-zksync/era-uniswap-v3-staker"
+    "url": "https://github.com/pegasys-fi/zk-pegasys-v3-staker"
   },
   "files": [
     "contracts",
@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "3.4.1-solc-0.7-2",
-    "@uniswap/v3-core": "https://github.com/uniswap-zksync/era-uniswap-v3-core.git#v1.0.0-zksync-era",
-    "@uniswap/v3-periphery": "https://github.com/uniswap-zksync/era-uniswap-v3-periphery.git#v1.0.1-zksync-era"
+    "@pegasys/v3-core": "https://github.com/pegasys-fi/zk-pegasys-v3-core.git#v1.0.0-zksync-era",
+    "@pegasys/v3-periphery": "https://github.com/pegasys-fi/zk-pegasys-v3-periphery.git#v1.3.0-zksync-era"
   },
   "devDependencies": {
     "@matterlabs/hardhat-zksync-deploy": "^0.6.3",

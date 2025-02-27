@@ -1,4 +1,4 @@
-# uniswap-v3-staker
+# pegasys-v3-staker
 
 This is the canonical staking contract designed for [Uniswap V3](https://github.com/uniswap-zksync/era-uniswap-v3-core) forked for zkSync Era.
 
